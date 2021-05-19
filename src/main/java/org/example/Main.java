@@ -6,33 +6,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Stream;
-
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
 
 public class Main {
 
    public static void main(String[] args) {
-
-      var service = new PokerService();
-
-      List<Player> winners = getLinesStream()
-            .map(service::processGame)
-            .filter(Objects::nonNull)
-            .collect(toList());
-
-      Map<Player, Long> result = winners.stream()
-            .collect(groupingBy(identity(), counting()));
+      Map<Player, Long> result = new PokerService().processGameStream(getLinesStream());
 
       System.out.println("Game results:");
-      System.out.println("Player A " + result.get(Player.A));
-      System.out.println("Player B " + result.get(Player.B));
+      System.out.println("Player A " + result.getOrDefault(Player.A, 0L));
+      System.out.println("Player B " + result.getOrDefault(Player.B, 0L));
    }
 
    private static Stream<String> getLinesStream() {

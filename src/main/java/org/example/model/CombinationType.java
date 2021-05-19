@@ -16,16 +16,16 @@ import java.util.function.Function;
 
 public enum CombinationType {
 
-   ROYAL_FLUSH(new RoyalFlushHandExtractor()),
-   STRAIGHT_FLUSH(new StraightFlashHandExtractor()),
-   FOUR_OF_A_KIND(new FourOfAKindHandExtractor()),
-   FULL_HOUSE(new FullHouseHandExtractor()),
-   FLUSH(new FlushHandExtractor()),
-   STRAIGHT(new StraightHandExtractor()),
-   THREE_OF_A_KIND(new ThreeOfAKindHandExtractor()),
-   TWO_PAIRS(new TwoPairsHandExtractor()),
+   HIGH_CARD(new HighCardHandExtractor()),
    ONE_PAIR(new OnePairHandExtractor()),
-   HIGH_CARD(new HighCardHandExtractor());
+   TWO_PAIRS(new TwoPairsHandExtractor()),
+   THREE_OF_A_KIND(new ThreeOfAKindHandExtractor()),
+   STRAIGHT(new StraightHandExtractor()),
+   FLUSH(new FlushHandExtractor()),
+   FULL_HOUSE(new FullHouseHandExtractor()),
+   FOUR_OF_A_KIND(new FourOfAKindHandExtractor()),
+   STRAIGHT_FLUSH(new StraightFlashHandExtractor()),
+   ROYAL_FLUSH(new RoyalFlushHandExtractor());
 
    private final Function<List<Card>, Hand> handResolver;
 

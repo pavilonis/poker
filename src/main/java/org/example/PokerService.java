@@ -7,13 +7,28 @@ import org.example.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
 import static java.util.Comparator.naturalOrder;
+import static java.util.Comparator.reverseOrder;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
 public class PokerService {
+
+   public Map<Player, Long> processGameStream(Stream<String> lineStream) {
+
+      List<Player> winners = lineStream.map(this::processGame)
+            .filter(Objects::nonNull)
+            .collect(toList());
+
+      return winners.stream()
+            .collect(groupingBy(identity(), counting()));
+   }
 
    public Player processGame(String line) {
       List<Card> cards = parseCards(line);
@@ -43,6 +58,7 @@ public class PokerService {
       List<Card> sortedCards = new ArrayList<>(cards);
       cards.sort(naturalOrder());
       return Stream.of(CombinationType.values())
+            .sorted(reverseOrder())
             .map(CombinationType::getHandResolver)
             .map(resolver -> resolver.apply(sortedCards))
             .filter(Objects::nonNull)
